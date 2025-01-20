@@ -1,0 +1,156 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<link rel="stylesheet" href="leaflet.css" />
+<script src="leaflet.js"></script>
+
+</head>
+
+<body>
+<div id="map" style="height: 500px; width: 900px;"></div>
+	<script>
+    // Initialize the map and set its view to a chosen geographical point and zoom level
+    var map = L.map('map').setView([51.03792530772966, 4.240526513495363], 8); // Coordinates and zoom level
+		
+	
+	var greenIcon = L.icon({
+    iconUrl: 'images/marker-icon.svg',
+	iconSize:     [25, 28], // size of the icon
+    iconAnchor:   [12.5, 28], // point of the icon which will correspond to marker's location
+    popupAnchor:  [-3, -76] // point from which the popup should open relative to the iconAnchor
+		
+});
+	var lichtgroen = L.icon({
+    iconUrl: 'images/marker-icon-bru.svg',
+	iconSize:     [25, 28], // size of the icon
+    iconAnchor:   [12.5, 28], // point of the icon which will correspond to marker's location
+    popupAnchor:  [-3, -76] // point from which the popup should open relative to the iconAnchor
+});
+	var rood = L.icon({
+    iconUrl: 'images/marker-icon-belpaire.svg',
+	iconSize:     [25, 28], // size of the icon
+    iconAnchor:   [12.5, 28], // point of the icon which will correspond to marker's location
+    popupAnchor:  [-3, -76] // point from which the popup should open relative to the iconAnchor
+});
+
+    // Add a tile layer to the map (OpenStreetMap is used here)
+    L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+    }).addTo(map);
+	
+	fetch("https://raw.githubusercontent.com/Zeger-VG/gemeenten_geojson/main/clustertest3.geojson")
+    .then(function(response) {
+        return response.json()
+    })
+    .then(function(data) {
+        L.geoJson(data).addTo(map);
+    })
+    .catch(function(error) {
+        console.log(`This is the error: ${error}`)
+    })		 
+
+//goeJSON laag kleuren
+
+		function getColor(cjb) {
+    	switch (cjb) {
+        case 'Antwerpen': return '#1f78b4';
+        case 'Mechelen': return '#33a02c';
+        case 'Turnhout': return '#e31a1c';
+		case 'Limburg': return '#ff7f00';
+        case 'Brussel': return '#6a3d9a';
+        case 'Leuven': return '#b15928';
+		case 'Gent': return '#a6cee3';
+        case 'Dendermonde': return '#b2df8a';
+        case 'Oudenaarde': return '#fb9a99';
+		case 'Brugge': return '#fdbf6f';
+        case 'Ieper': return '#cab2d6';
+        case 'Kortrijk': return '#ffff99';
+		case 'Veurne': return '#8dd3c7';
+    }
+}
+		 
+//goeJSON laag toevoegen
+		 
+fetch("https://raw.githubusercontent.com/Zeger-VG/gemeenten_geojson/main/clustertest3.geojson")
+    .then((response) => response.json())
+    .then((data) => {
+
+	// Add the GeoJSON layer with styles and popups
+        L.geoJson(data, {
+            style: function(feature) {
+                return {
+                    fillColor: getColor(feature.properties.CJB), // Use CJB to determine color
+			        weight: 0,      // Ensure no border width is set
+					color: 'transparent',
+					fill: true,
+					interactive: true,
+					fillOpacity: 0.4
+                };
+            },
+            onEachFeature: function(feature, layer) {
+                // Add a popup for each feature
+                layer.bindPopup(`
+                    ${feature.properties.NAAM}<br>
+                    <b>CJB ${feature.properties.CJB}</b>
+                `);
+				
+            }
+        }).addTo(map);
+	
+    })
+    .catch((error) => {
+        console.log(`This is the error: ${error}`);
+    });	
+
+    // Add a marker to the map
+    L.marker([51.213242533620196, 4.4011147530616785],{icon: greenIcon}).addTo(map)
+        .bindPopup('<b style="color:#1C7174;"><u>Gevangenis Antwerpen</u></b><br><sub>Begijnenstraat 42, 2000 Antwerpen</sub><br><br><b>Beleidscoördinator:</b><br><a href= "mailto:inge.vandeurzen@vlaanderen.be">Inge Vandeurzen</a><br><br><b>Organisatieondersteuner:</b><br><a href= "mailto:jana.vandenwyngaert@vlaanderen.be">Jana Van den Wyngaert</a><br><a href= "mailto:marleen.pynaerts@vlaanderen.be">Marleen Pynaerts</a> ')
+	L.marker([51.19623363072741, 4.308947110730642],{icon: greenIcon}).addTo(map)
+        .bindPopup('<b style="color:#1C7174;"><u>Gevangenis Beveren</u></b><br><sub>Schaarbeekstraat 2, 9120 Beveren</sub><br><br><b>Beleidscoördinator:</b><br><a href= “mailto:petra.kerstens@vlaanderen.be”>Petra Kerstens </a><br><br><b>Organisatieondersteuner:</b><br><a href= “mailto:marisca.dhont@vlaanderen.be”>Marisca D’Hont</a>')
+	L.marker([51.206988410614, 3.188091753061349],{icon: greenIcon}).addTo(map)
+        .bindPopup('<b style="color:#1C7174;"><u>Penitentiair Complex Brugge</u></b><br><sub>Legeweg 200, 8200 Brugge (Sint-Andries)</sub><br><br><b>Beleidscoördinator:</b><br><a href= "mailto:marieke.dejong@vlaanderen.be">Marieke de Jong</a><br><br><b>Organisatieondersteuner:</b><br><a href= "mailto:jolien.lescrauwaet@vlaanderen.be">Jolien Lescrauwaet</a><br><br><b>Consulent re-integratie zeden:</b><br><a href= "mailto:lien.janssens@vlaanderen.be">Lien Janssens</a>')
+	L.marker([51.02006370614566, 4.0782644683920966],{icon: greenIcon}).addTo(map)
+        .bindPopup('<b style="color:#1C7174;"><u>Gevangenis Dendermonde</u></b><br><sub>Tanneweg 1, 9200 Dendermonde</sub><br><br><b>Beleidscoördinator:</b><br><a href= "mailto:annelies.jans@vlaanderen.be">Annelies Jans</a><br><br><b>Organisatieondersteuner:</b><br><a href= "mailto:lisbeth.torfs@vlaanderen.be">Lisbeth Torfs</a><br>')
+	L.marker([51.029781722714695, 4.105280954897166],{icon: greenIcon}).addTo(map)
+        .bindPopup('<b style="color:#1C7174;"><u>Hulpgevangenis Dendermonde</u></b><br><sub>Sint-Jacobstraat 26, 9200 Dendermonde</sub><br><br><b>Beleidscoördinator:</b><br><a href= "mailto:marjolein.vandevelde@vlaanderen.be">Marjolein Van de Velde</a><br><br><b>Organisatieondersteuner:</b><br><a href= "mailto:charlotte.despiegeleer@vlaanderen.be">Charlotte De Spiegeleer</a><br>')
+	L.marker([51.054175619660576, 3.7039374548983206],{icon: greenIcon}).addTo(map)
+        .bindPopup('<b style="color:#1C7174;"><u>Gevangenis Gent</u></b><br><sub>Nieuwewandeling 89, 9000 Gent</sub><br><br><b>Beleidscoördinator en regiodirecteur:</b><br><a href= "mailto:koenraad.polfliet@vlaanderen.be">Koenraad Polfliet</a><br><br><b>Organisatieondersteuner:</b><br><a href= "mailto:veerle.verlinde@vlaanderen.be">Veerle Verlinde</a><br>')
+	L.marker([50.94508232964178,5.327094568388553],{icon: greenIcon}).addTo(map)
+        .bindPopup('<b style="color:#1C7174;"><u>Gevangenis Hasselt</u></b><br><sub>Nieuwewandeling 89, 9000 Gent</sub><br><br><b>Beleidscoördinator en regiodirecteur:</b><br><a href= "mailto:Gert.vanherk@vlaanderen.be">Gert Vanherk</a><br><br><b>Organisatieondersteuner:</b><br><a href= "mailto:ina.muysers@vlaanderen.be">Ina Muysers</a><br><a href= "mailto:lies.swinnen@vlaanderen.be">Lies Swinnen</a><br>')
+	L.marker([51.40208202236563, 4.78114422423573],{icon: greenIcon}).addTo(map)
+        .bindPopup('<b style="color:#1C7174;"><u>Penitentiair Schoolcentrum Hoogstraten</u></b><br><sub>Gelmelstraat 131, 2320 Hoogstraten</sub><br><br><b>Beleidscoördinator:</b><br><a href= "mailto:sara.buelens@vlaanderen.be">Sara Buelens</a><br><br><b>Organisatieondersteuner:</b><br><a href= "mailto:melanie.vandenbroeck@vlaanderen.be">Mélanie Van den Broeck</a><br>')	
+	L.marker([50.851875793180184, 2.878516081879565],{icon: greenIcon}).addTo(map)
+        .bindPopup('<b style="color:#1C7174;"><u>Gevangenis Ieper</u></b><br><sub>Elverdingsestraat 72, 8900 Ieper</sub><br><br><b>Beleidscoördinator:</b><br><a href= "mailto:Frauke.depoortere@vlaanderen.be ">Frauke De Poortere</a><br><br><b>Organisatieondersteuner:</b><br><a href= "mailto:lauren.vererfven@vlaanderen.be">Lauren Vererfven</a><br>')
+	L.marker([50.871892070337545, 4.709944581880517],{icon: greenIcon}).addTo(map)
+        .bindPopup('<b style="color:#1C7174;"><u>Gevangenis Leuven-Centraal</u></b><br><sub>Geldenaaksevest 64, 3000 Leuven</sub><br><br><b>Beleidscoördinator:</b><br><a href= "mailto:karen.dewin@vlaanderen.be">Karen De Win</a><br><br><b>Organisatieondersteuner:</b><br><a href= "mailto:anne.verbraeken@vlaanderen.be">Anne Verbraeken</a><br>')	
+	L.marker([50.87854292346655, 4.712998454890093],{icon: greenIcon}).addTo(map)
+        .bindPopup('<b style="color:#1C7174;"><u>Hulpgevangenis Leuven</u></b><br><sub>Maria Theresiastraat 74, 3000 Leuven</sub><br><br><b>Beleidscoördinator:</b><br><a href= "mailto:tineke.tailleur@vlaanderen.be">Tineke Tailleur</a><br><br><b>Organisatieondersteuner:</b><br><a href= "mailto:britt.paquay@vlaanderen.be">Britt Paquay</a><br>')
+	L.marker([51.034456849745276, 4.4841850395578975],{icon: greenIcon}).addTo(map)
+        .bindPopup('<b style="color:#1C7174;"><u>Gevangenis Mechelen</u></b><br><sub>Liersesteenweg 2, 2800 Mechelen</sub><br><br><b>Beleidscoördinator:</b><br><a href= "mailto:liesbet.claeys@vlaanderen.be">Liesbet Claeys</a><br><br><b>Organisatieondersteuner:</b><br><a href= "mailto:nona.janssens@vlaanderen.be">Nona Janssens</a><br><br><b>Consulent re-integratie (ex)gedetineerden:</b><br><a href= "mailto:astrid.messeman@vlaanderen.be">Astrid Messeman</a>')
+	L.marker([51.35605367064889, 4.829554568407939],{icon: greenIcon}).addTo(map)
+        .bindPopup('<b style="color:#1C7174;"><u>Strafinrichting Merksplas </u></b><br><sub>Steenweg op Wortel 1, 2330 Merksplas</sub><br><br><b>Beleidscoördinator:</b><br><a href= "mailto:joke.nauwelaerts@vlaanderen.be">Joke Nauwelaerts</a><br><br><b>Organisatieondersteuner:</b><br><a href= "mailto:sophie.dekind@vlaanderen.be">Sophie de Kind</a><br>')
+	L.marker([50.84295119122745, 3.6107004837232712],{icon: greenIcon}).addTo(map)
+        .bindPopup('<b style="color:#1C7174;"><u>Gevangenis Oudenaarde</u></b><br><sub>Bourgondiëstraat 6, 9700 Oudenaarde</sub><br><br><b>Beleidscoördinator:</b><br><a href= "mailto:jeroen.vanluchene@vlaanderen.be">Jeroen Van Luchene</a><br><br><b>Organisatieondersteuner:</b><br><a href= "mailto:wolf.decorte@vlaanderen.be">Wolf De Corte</a><br>')
+	L.marker([51.09049148460209, 3.3384110702395877],{icon: greenIcon}).addTo(map)
+        .bindPopup('<b style="color:#1C7174;"><u>Penitentiair Landbouwcentrum Ruiselede</u></b><br><sub>Bourgondiëstraat 6, 9700 Oudenaarde</sub><br><br><b>Beleidscoördinator:</b><br><a href= "mailto:isabel.ongenaert@vlaanderen.be">Isabel Ongenaert</a><br><a href= "mailto:louise.decabooter@vlaanderen.be">Louise Decabooter</a><br><br><b>Organisatieondersteuner:</b><br><a href= "mailto:mieke.seys@vlaanderen.be">Mieke Seys</a><br>')
+	L.marker([50.82245928084547,4.346759681878148],{icon: greenIcon}).addTo(map)
+        .bindPopup('<b style="color:#1C7174;"><u>Gevangenis Sint-Gillis</u></b><br><sub>Ducpétiauxlaan 106, 1060 Sint-Gillis</sub><br><br><b>Beleidscoördinator:</b><br><a href= "mailto:audrey.teugels@vlaanderen.be">Audrey Teugels</a><br><br><b>Organisatieondersteuner:</b><br><a href= "mailto:laura.tondeleir@vlaanderen.be">Laura Tondeleir</a><br>')
+	L.marker([50.89811097242724, 4.425370610716616],{icon: greenIcon}).addTo(map)
+        .bindPopup('<b style="color:#1C7174;"><u>Gevangenis Haren</u></b><br><sub>Witloofstraat 135, 1130 Haren</sub><br><br><b>Beleidscoördinator:</b><br><a href= "mailto:eva.meeus@vlaanderen.be">Eva Meeus</a><br><br><b>Organisatieondersteuner:</b><br><a href= "mailto:justien.deprez@vlaanderen.be">Justien Deprez</a><br>')
+	L.marker([51.3253434048625, 4.941447462874031],{icon: greenIcon}).addTo(map)
+        .bindPopup('<b style="color:#1C7174;"><u>Gevangenis Turnhout</u></b><br><sub>Wezenstraat 1, 2300 Turnhout</sub><br><br><b>Beleidscoördinator:</b><br><a href= "mailto:sven.dirkx@vlaanderen.be">Sven Dirkx</a><br><br><b>Organisatieondersteuner:</b><br><a href= "mailto:lisa.verwimp@vlaanderen.be">Lisa Verwimp</a><br>')
+	L.marker([51.39932373980807, 4.826552126079719],{icon: greenIcon}).addTo(map)
+        .bindPopup('<b style="color:#1C7174;"><u>Strafinrichting Wortel</u></b><br><sub>Kolonie 17, 2323 Wortel</sub><br><br><b>Beleidscoördinator:</b><br><a href= "mailto:karen.delespaul@vlaanderen.be">Karen Delespaul</a><br><br><b>Organisatieondersteuner:</b><br><a href= "mailto:katrijn.thone@vlaanderen.be">Katrijn Thoné</a><br>')
+	L.marker([50.80585347364631,3.2877151413912937],{icon: lichtgroen}).addTo(map)
+        .bindPopup('<b style="color:#1C7174;"><u>Detentiehuis Kortrijk</u></b><br><sub>Sint- Denijseweg 1, 8500 Kortrijk</sub><br><br><b>Beleidscoördinator en regiodirecteur:</b><br><a href= "mailto:delphine.vanhaelemeesch@vlaanderen.be">Delphine Vanhaelemeesch</a><br><br><b>Organisatieondersteuner:</b><br><a href= "mailto:merel.gruwez@vlaanderen.be">Merel Gruwez</a><br>')
+	L.marker([50.777996408483745, 5.466794479711599],{icon: greenIcon}).addTo(map)
+        .bindPopup('<b style="color:#1C7174;"><u>Gevangenis Tongeren</u></b><br><sub>Wijngaardstraat 65, 3700 Tongeren</sub><br><br><b>Beleidscoördinator:</b><br><a href= "mailto:berb.lenaerts@vlaanderen.be">Berb Lenaerts</a><br><br><b>Organisatieondersteuner:</b><br><a href= "mailto:anne.gerits@vlaanderen.be">Anne Gerits</a><br>')
+	L.marker([50.8614765307518, 4.356909728834879],{icon: rood}).addTo(map)
+        .bindPopup('<b style="color:#1C7174;"><u>Marie-Elisabeth Belpairegebouw</u></b><br><sub>Simon Bolivarlaan 17, 1000 Brussel</sub>')
+	
+		
+		
+</script>
+</body>
+</html>
