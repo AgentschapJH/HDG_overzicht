@@ -91,8 +91,9 @@ fetch("https://raw.githubusercontent.com/AgentschapJH/geojson/main/gemeenten3.ge
             onEachFeature: function(feature, layer) {
                 // Add a popup for each feature
                 layer.bindPopup(`
-                    ${feature.properties.NAAM}<br>
-                    <b>CJB ${feature.properties.CJB}</b>
+                    ${feature.properties.NAAM}<br><br>
+                    <b>CJB ${feature.properties.CJB}</b><br>
+                    ${feature.properties.CJBadres}
                 `);
 				
             }
