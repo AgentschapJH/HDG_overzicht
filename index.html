@@ -10,7 +10,9 @@
 <body>
 <div id="map" style="height: 100vh"></div>
 	<script>
-    // Initialize the map and set its view to a chosen geographical point and zoom level
+		
+// Initialize the map and set its view to a chosen geographical point and zoom level
+		
     var map = L.map('map').setView([51.03792530772966, 4.240526513495363], 8); // Coordinates and zoom level
 		
 	
@@ -34,7 +36,8 @@
     popupAnchor:  [0, -14] // point from which the popup should open relative to the iconAnchor
 });
 
-    // Add a tile layer to the map (OpenStreetMap is used here)
+// Add a tile layer to the map (OpenStreetMap is used here)
+		
     L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
         attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
     }).addTo(map);
@@ -97,15 +100,14 @@ fetch("https://raw.githubusercontent.com/AgentschapJH/geojson/main/gemeenten3.ge
                 `);
 				
             }
-        }).addTo(map);
-	
+        }).addTo(map);	
     })
     .catch((error) => {
         console.log(`This is the error: ${error}`);
     });	
 
-    // Add a marker to the map
-    L.marker([51.213242533620196, 4.4011147530616785],{icon: greenIcon}).addTo(map)
+// Add a marker to the map
+	L.marker([51.213242533620196, 4.4011147530616785],{icon: greenIcon}).addTo(map)
         .bindPopup('<b style="color:#1C7174;"><u>Gevangenis Antwerpen</u></b><br><sub>Begijnenstraat 42, 2000 Antwerpen</sub><br><br><b>Beleidscoördinator:</b><br><a href= "mailto:inge.vandeurzen@vlaanderen.be">Inge Vandeurzen</a><br><br><b>Organisatieondersteuner:</b><br><a href= "mailto:jana.vandenwyngaert@vlaanderen.be">Jana Van den Wyngaert</a><br><a href= "mailto:marleen.pynaerts@vlaanderen.be">Marleen Pynaerts</a> ')
 	L.marker([51.19623363072741, 4.308947110730642],{icon: greenIcon}).addTo(map)
         .bindPopup('<b style="color:#1C7174;"><u>Gevangenis Beveren</u></b><br><sub>Schaarbeekstraat 2, 9120 Beveren</sub><br><br><b>Beleidscoördinator:</b><br><a href= “mailto:petra.kerstens@vlaanderen.be”>Petra Kerstens </a><br><br><b>Organisatieondersteuner:</b><br><a href= “mailto:marisca.dhont@vlaanderen.be”>Marisca D’Hont</a>')
@@ -149,9 +151,7 @@ fetch("https://raw.githubusercontent.com/AgentschapJH/geojson/main/gemeenten3.ge
         .bindPopup('<b style="color:#1C7174;"><u>Gevangenis Tongeren</u></b><br><sub>Wijngaardstraat 65, 3700 Tongeren</sub><br><br><b>Beleidscoördinator:</b><br><a href= "mailto:berb.lenaerts@vlaanderen.be">Berb Lenaerts</a><br><br><b>Organisatieondersteuner:</b><br><a href= "mailto:anne.gerits@vlaanderen.be">Anne Gerits</a><br>')
 	L.marker([50.8614765307518, 4.356909728834879],{icon: rood}).addTo(map)
         .bindPopup('<b style="color:#1C7174;"><u>Marie-Elisabeth Belpairegebouw</u></b><br><sub>Simon Bolivarlaan 17, 1000 Brussel</sub>')
-	
-		
-		
+			
 </script>
 </body>
 </html>
